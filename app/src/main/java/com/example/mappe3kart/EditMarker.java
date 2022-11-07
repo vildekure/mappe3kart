@@ -32,7 +32,6 @@ public class EditMarker extends Activity {
                 finish();
             }
         });
-
     }
 
     // funskjon som endrer marker, nå er det kun en tilbake knapp
