@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 
 public class EditMarker extends Activity {
     EditText innName, innInfo;
-    Button savebtn, delbtn, backbtn;
+    Button savebtn, delbtn;
+    ImageButton backbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,14 +24,29 @@ public class EditMarker extends Activity {
 
         savebtn = findViewById(R.id.savebtn);
         delbtn = findViewById(R.id.delbtn);
+        backbtn = findViewById(R.id.backbtn);
 
-        // test fullfør activity knapp er delete knapp
-        delbtn.setOnClickListener(new View.OnClickListener() {
+        backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
 
+    }
+
+    // funskjon som endrer marker, nå er det kun en tilbake knapp
+    public void editIMarker (View v) {
+
+
+        finish();
+    }
+
+
+    // funksjon som skal slette marker, nå sender den deg kun tilbake
+    public void deleteMarker (View v) {
+
+
+        finish();
     }
 }
