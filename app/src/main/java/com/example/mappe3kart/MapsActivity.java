@@ -45,6 +45,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.setOnMapClickListener(this);
+
         // Add a marker in Oslo and move the camera
         LatLng oslo = new LatLng(59.91, 10.75);
         mMap.addMarker(new MarkerOptions()
@@ -63,15 +65,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    // skal ha en funksjon som lar en lage markers på kartet
     @Override
     public void onMapClick(@NonNull LatLng latLng) {
-        // her kan man hente ut klikk fra kart
-        double latVar = latLng.latitude; //Koordinering
-        double longVar = latLng.longitude; //koordinat 2
-
-        LatLng marker = new LatLng(latVar,longVar);
-        mMap.addMarker(new MarkerOptions().position(marker).title("Test Marker"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
+        // double latVar = latLng.latitude; //Koordinering
+        // double longVar = latLng.longitude; //koordinat 2
+        MarkerOptions marker = new MarkerOptions()
+                .position(latLng)
+                .title("Test Marker");
+        mMap.addMarker(marker);
 
     }
 }
