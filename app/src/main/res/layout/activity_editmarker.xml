@@ -20,6 +20,7 @@
             android:textSize="20dp">
         </TextView>
         <EditText
+            android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </EditText>
@@ -31,6 +32,7 @@
             android:textSize="20dp">
         </TextView>
         <EditText
+            android:id="@+id/info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </EditText>
@@ -42,16 +44,20 @@
             android:gravity="center">
 
             <Button
+                android:id="@+id/savebtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Lagre"
-                android:textSize="20dp"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/blue"
                 android:layout_marginRight="20dp">
             </Button>
             <Button
+                android:id="@+id/delbtn"
+                android:backgroundTint="@color/red"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
+                android:textColor="@color/white"
                 android:text="Slett">
             </Button>
 
