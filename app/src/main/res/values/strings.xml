@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">mappe3kart</string>
+    <string name="app_name">Severdigheter</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="name">Navn</string>
+    <string name="info">Info</string>
+    <string name="del">Slett</string>
+    <string name="save">Lagre</string>
 </resources>
