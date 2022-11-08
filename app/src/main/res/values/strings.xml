@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Severdigheter</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="reg">Registrer Markør</string>
     <string name="name">Navn</string>
     <string name="adr">Adresse</string>
     <string name="del">Slett</string>

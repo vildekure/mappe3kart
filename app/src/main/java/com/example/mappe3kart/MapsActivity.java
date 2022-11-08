@@ -72,6 +72,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     // skal ha en funksjon som lar en lage markers på kartet
+    // de bør lagre koordinatene
     @Override
     public void onMapClick(@NonNull LatLng latLng) {
         double latVar = latLng.latitude;

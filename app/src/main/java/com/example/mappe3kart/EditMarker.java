@@ -9,9 +9,11 @@ import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 public class EditMarker extends Activity {
-    EditText innName, innAdresse;
-    Button savebtn, delbtn;
+    TextInputEditText innName, innInfo, innAdress;
+    Button delbtn, savebtn;
     ImageButton backbtn;
 
     @Override
@@ -19,8 +21,9 @@ public class EditMarker extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editmarker);
 
-        innName = findViewById(R.id.name);
-        innAdresse =findViewById(R.id.adresse);
+        innName = findViewById(R.id.nameInput);
+        innInfo = findViewById(R.id.infoInput);
+        innAdress = findViewById(R.id.adrInput);
 
         savebtn = findViewById(R.id.savebtn);
         delbtn = findViewById(R.id.delbtn);
