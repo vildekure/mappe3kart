@@ -21,6 +21,12 @@ public class EditMarker extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editmarker);
 
+        /*
+        getJSON task = new getJSON();
+        task.execute(new
+                String[]{"http://data1500.cs.oslomet.no/~s354592/jsonout.php"});
+         */
+
         innName = findViewById(R.id.nameInput);
         innInfo = findViewById(R.id.infoInput);
         innAdress = findViewById(R.id.adrInput);

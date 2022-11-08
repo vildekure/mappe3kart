@@ -81,6 +81,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         double latVar = latLng.latitude;
         double longVar = latLng.longitude;
         System.out.println(latVar + " " + longVar);
+        Intent intent = new Intent(MapsActivity.this, EditMarker.class);
+        startActivity(intent);
         MarkerOptions marker = new MarkerOptions()
                 .position(latLng)
                 .title("Lag Severdighet");
