@@ -40,11 +40,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/info"
+                android:text="@string/adr"
                 android:textSize="20sp"/>
 
             <EditText
-                android:id="@+id/info"
+                android:id="@+id/adresse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

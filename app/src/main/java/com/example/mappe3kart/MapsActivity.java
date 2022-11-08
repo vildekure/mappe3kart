@@ -59,8 +59,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // skal ha en funksjon som lar en lage markers på kartet
     @Override
     public void onMapClick(@NonNull LatLng latLng) {
-        // double latVar = latLng.latitude;
-        // double longVar = latLng.longitude;
+        double latVar = latLng.latitude;
+        double longVar = latLng.longitude;
+        System.out.println(latVar + " " + longVar);
         MarkerOptions marker = new MarkerOptions()
                 .position(latLng)
                 .title("Test Marker");

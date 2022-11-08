@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 
 public class EditMarker extends Activity {
-    EditText innName, innInfo;
+    EditText innName, innAdresse;
     Button savebtn, delbtn;
     ImageButton backbtn;
 
@@ -20,7 +20,7 @@ public class EditMarker extends Activity {
         setContentView(R.layout.activity_editmarker);
 
         innName = findViewById(R.id.name);
-        innInfo = findViewById(R.id.info);
+        innAdresse =findViewById(R.id.adresse);
 
         savebtn = findViewById(R.id.savebtn);
         delbtn = findViewById(R.id.delbtn);
