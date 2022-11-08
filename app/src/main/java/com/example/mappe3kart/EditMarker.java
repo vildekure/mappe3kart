@@ -24,7 +24,7 @@ public class EditMarker extends Activity {
         /*
         getJSON task = new getJSON();
         task.execute(new
-                String[]{"http://data1500.cs.oslomet.no/~s354592/jsonout.php"});
+                String[]{"http://data1500.cs.oslomet.no/~s354592/jsonin.php});
          */
 
         innName = findViewById(R.id.nameInput);
