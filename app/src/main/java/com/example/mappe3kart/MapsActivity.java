@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.example.mappe3kart.Models.Severdighet;
+import com.google.android.gms.common.util.JsonUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,6 +26,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
     private GoogleMap mMap;
@@ -40,11 +44,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        getJSON task = new getJSON();
-        task.execute(new
-                String[]{"http://data1500.cs.oslomet.no/~s354592/jsonout.php"});
-
     }
 
     @Override
@@ -52,6 +51,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         mMap.setOnMapClickListener(this);
+
+        getJSON task = new getJSON();
+        task.execute(new
+                String[]{"http://data1500.cs.oslomet.no/~s354592/jsonout.php"});
 
         // Add a marker in Oslo and move the camera
         LatLng oslo = new LatLng(59.91, 10.75);
@@ -80,18 +83,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         System.out.println(latVar + " " + longVar);
         MarkerOptions marker = new MarkerOptions()
                 .position(latLng)
-                .title("Test Marker");
+                .title("Lag Severdighet");
         mMap.addMarker(marker);
 
     }
 
-    private class getJSON extends AsyncTask<String, Void, String> {
+    private class getJSON extends AsyncTask<String, Void, List<Severdighet>> {
         JSONObject jsonObject;
 
         @Override
-        protected String doInBackground(String... urls) {
+        protected List<Severdighet> doInBackground(String... urls) {
             String s = "";
             String output = "";
+            System.out.println("Er i doInBackground");
 
             for (String url : urls) {
                 try {
@@ -113,32 +117,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                     conn.disconnect();
                     try {
-                        JSONArray mat = new JSONArray(output);
-                        for (int i = 0; i < mat.length(); i++) {
-                            JSONObject jsonobject = mat.getJSONObject(i);
+                        List<Severdighet> severdigheter = new ArrayList<>();
+                        JSONArray mark = new JSONArray(output);
+                        for (int i = 0; i < mark.length(); i++) {
+                            JSONObject jsonobject = mark.getJSONObject(i);
 
+                            int id = jsonobject.getInt("id");
                             String latitude = jsonobject.getString("latitude");
                             String longitude = jsonobject.getString("longitude");
                             String name = jsonobject.getString("name");
                             String info = jsonobject.getString("info");
                             String adresse = jsonobject.getString("adresse");
 
+                            System.out.println(id + latitude + longitude + name + info + adresse);
+                            severdigheter.add(new Severdighet(id, latitude, longitude, name, info, adresse));
                         }
-                        return null;
+                        return severdigheter;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     return null;
                 } catch (Exception e) {
-                    return "Noe gikk galt";
+                    e.printStackTrace();
+                    return null;
                 }
             }
             return null;
         }
 
         @Override
-        protected void onPostExecute(String ss) {
-
+        protected void onPostExecute(List<Severdighet> severdigheter) {
+            for (Severdighet severdighet: severdigheter
+                 ) {
+                double latdouble = Double.parseDouble(severdighet.latitude);
+                double longdouble = Double.parseDouble(severdighet.longitude);
+                LatLng nySeverdighet = new LatLng(latdouble, longdouble);
+                mMap.addMarker(new MarkerOptions()
+                        .position(nySeverdighet)
+                        .title(severdighet.name)
+                        .snippet(severdighet.info));
+            }
         }
     }
 }

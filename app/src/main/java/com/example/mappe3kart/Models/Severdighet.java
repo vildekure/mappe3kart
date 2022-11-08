@@ -1,17 +1,17 @@
 package com.example.mappe3kart.Models;
 
-public class Marker {
-    private int ID;
-    private String latitude;
-    private String longitude;
-    private String name;
-    private String info;
-    private String adresse;
+public class Severdighet {
+    public int id;
+    public String latitude;
+    public String longitude;
+    public String name;
+    public String info;
+    public String adresse;
 
-    public Marker(){
+    public Severdighet(){
     }
 
-    public Marker(String latitude, String longitude, String name, String info, String adresse) {
+    public Severdighet(String latitude, String longitude, String name, String info, String adresse) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.name = name;
@@ -19,8 +19,8 @@ public class Marker {
         this.adresse = adresse;
     }
 
-    public Marker(int ID, String latitude, String longitude, String name, String info, String adresse) {
-        this.ID = ID;
+    public Severdighet(int id, String latitude, String longitude, String name, String info, String adresse) {
+        this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
         this.name = name;
@@ -28,12 +28,12 @@ public class Marker {
         this.adresse = adresse;
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getLatitude() {
