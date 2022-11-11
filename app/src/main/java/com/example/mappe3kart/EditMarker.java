@@ -74,7 +74,7 @@ public class EditMarker extends Activity {
 
         System.out.println("Severdig het med koordinater " + latitude + " " + longitude + " er laget");
 
-        String url = "http://data1500.cs.oslomet.no/~s354592/jsonin.php?Laitude=" + latitude +
+        String url = "http://data1500.cs.oslomet.no/~s354592/jsonin.php?Latitude=" + latitude +
                 "&Longitude=" + longitude + "&Name=" + name + "&Info=" + info +
                 "&Adresse=" + adresse;
 
@@ -86,8 +86,6 @@ public class EditMarker extends Activity {
     // funksjon som skal slette marker, nå sender den deg kun tilbake
     public void deleteMarker (View v) {
         /* getJSON jsondelete = new getJSON();
-        jsondelete.execute(new
-                String[]{"http://data1500.cs.oslomet.no/~s354592/jsondelete.php"});
 
         // Hvordan få tak i id???
 

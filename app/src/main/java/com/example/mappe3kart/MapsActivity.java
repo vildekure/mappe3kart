@@ -81,12 +81,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapClick(@NonNull LatLng latLng) {
         double latVar = latLng.latitude;
         double longVar = latLng.longitude;
+
+        String latvarParse = Double.toString(latVar);
+        String longvarParse = Double.toString(longVar);
+
         System.out.println(latVar + " " + longVar);
+
         Intent toEditMarker = new Intent(MapsActivity.this, EditMarker.class);
 
         // prøver å legge til info for å sende til edit?
-        toEditMarker.putExtra("latitude", latVar);
-        toEditMarker.putExtra("longitude", longVar);
+        toEditMarker.putExtra("latitude", latvarParse);
+        toEditMarker.putExtra("longitude", longvarParse);
 
         startActivity(toEditMarker);
     }
