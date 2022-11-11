@@ -69,6 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onInfoWindowClick(@NonNull Marker marker) {
                 Intent intent = new Intent(MapsActivity.this, EditMarker.class);
+                //intent.putExtra("id", id);
                 startActivity(intent);
             }
         });
@@ -81,13 +82,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         double latVar = latLng.latitude;
         double longVar = latLng.longitude;
         System.out.println(latVar + " " + longVar);
-        Intent intent = new Intent(MapsActivity.this, EditMarker.class);
-        startActivity(intent);
-        MarkerOptions marker = new MarkerOptions()
-                .position(latLng)
-                .title("Lag Severdighet");
-        mMap.addMarker(marker);
+        Intent toEditMarker = new Intent(MapsActivity.this, EditMarker.class);
 
+        // prøver å legge til info for å sende til edit?
+        toEditMarker.putExtra("latitude", latVar);
+        toEditMarker.putExtra("longitude", longVar);
+
+        startActivity(toEditMarker);
     }
 
     private class getJSON extends AsyncTask<String, Void, List<Severdighet>> {
