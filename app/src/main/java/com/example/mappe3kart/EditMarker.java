@@ -67,14 +67,10 @@ public class EditMarker extends Activity {
     // funskjon som endrer marker, nå er det kun en tilbake knapp
     public void saveMarker (View v) {
         getJSON jsonin = new getJSON();
-        jsonin.execute(new
-                String[]{"http://data1500.cs.oslomet.no/~s354592/jsonin.php"});
 
         String name = innName.getText().toString();
         String info = innInfo.getText().toString();
         String adresse = innAdress.getText().toString();
-
-        Severdighet nySeverdighet = new Severdighet(latitude, longitude, name, info, adresse);
 
         System.out.println("Severdig het med koordinater " + latitude + " " + longitude + " er laget");
 
@@ -82,18 +78,22 @@ public class EditMarker extends Activity {
                 "&Longitude=" + longitude + "&Name=" + name + "&Info=" + info +
                 "&Adresse=" + adresse;
 
+        jsonin.execute(url);
+
     }
 
 
     // funksjon som skal slette marker, nå sender den deg kun tilbake
     public void deleteMarker (View v) {
-        getJSON jsondelete = new getJSON();
+        /* getJSON jsondelete = new getJSON();
         jsondelete.execute(new
                 String[]{"http://data1500.cs.oslomet.no/~s354592/jsondelete.php"});
 
         // Hvordan få tak i id???
 
         // String url = "http://data1500.cs.oslomet.no/~s354592/jsondelete.php?id=" + id;
+
+         */
 
         }
 
