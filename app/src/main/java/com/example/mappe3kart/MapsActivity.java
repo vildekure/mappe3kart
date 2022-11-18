@@ -1,8 +1,13 @@
 package com.example.mappe3kart;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -60,7 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // move camera to Oslo
         LatLng oslo = new LatLng(59.91, 10.75);
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(10));
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(oslo));
 
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
@@ -74,10 +79,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 intent.putExtra("dbId", severdighet.id);
                 intent.putExtra("dbName", severdighet.name);
                 intent.putExtra("dbInfo", severdighet.info);
-                intent.putExtra("dbLat", severdighet.latitude);
-                intent.putExtra("dbLong", severdighet.longitude);
-                intent.putExtra("dbAdresse", severdighet.adresse);
-                startActivity(intent);
+                intent.putExtra("latitude", severdighet.latitude);
+                intent.putExtra("longitude", severdighet.longitude);
+                intent.putExtra("adresse", severdighet.adresse);
+
+                editActivityResultLauncher.launch(intent);
                 System.out.println(severdighet.id);
             }
         });
@@ -154,15 +160,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         @Override
         protected void onPostExecute(List<Severdighet> severdigheter) {
-            for (Severdighet severdighet: severdigheter
-                 ) {
+            for (Severdighet severdighet : severdigheter
+            ) {
                 double latdouble = Double.parseDouble(severdighet.latitude);
                 double longdouble = Double.parseDouble(severdighet.longitude);
                 LatLng nySeverdighet = new LatLng(latdouble, longdouble);
                 mMap.addMarker(new MarkerOptions()
-                        .position(nySeverdighet)
-                        .title(severdighet.name)
-                        .snippet(severdighet.info))
+                                .position(nySeverdighet)
+                                .title(severdighet.name)
+                                .snippet(severdighet.info))
                         .setTag(severdighet);
             }
         }
@@ -176,6 +182,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public GetAddressTask(LatLng latLng) {
             this.latLng = latLng;
         }
+
         @Override
         protected String doInBackground(LatLng... latlng) {
             System.out.println("Er i GetAdressTask doInBackground");
@@ -208,8 +215,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String adresse = ((JSONArray) jsonObject.get("results")).getJSONObject(0).getString("formatted_address");
                 System.out.println("????????????????? " + adresse);
                 return adresse;
-            }
-            catch (IOException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             } catch (JSONException ex) {
                 ex.printStackTrace();
@@ -224,10 +230,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // prøver å legge til info for å sende til edit
             toEditMarker.putExtra("latitude", latLng.latitude);
             toEditMarker.putExtra("longitude", latLng.longitude);
-            toEditMarker.putExtra("klikkAdresse", resultat);
+            toEditMarker.putExtra("adresse", resultat);
 
-            startActivity(toEditMarker);
+            editActivityResultLauncher.launch(toEditMarker);
         }
     }
+
+    ActivityResultLauncher<Intent> editActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        System.out.println("Clear nå her");
+                        mMap.clear();
+                        getJSON task = new getJSON();
+                        task.execute(new
+                                String[]{"http://data1500.cs.oslomet.no/~s354592/jsonout.php"});
+                    }
+                }
+            });
 }
 

@@ -47,6 +47,8 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:boxStrokeColor="@color/blue"
+                app:hintTextColor="@color/blue"
                 app:startIconDrawable="@drawable/ic_baseline_add_comment_24"
                 android:layout_margin="10dp"
                 android:hint="@string/name">
@@ -70,6 +72,8 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:boxStrokeColor="@color/blue"
+                app:hintTextColor="@color/blue"
                 app:startIconDrawable="@drawable/ic_baseline_info_24"
                 android:layout_margin="10dp"
                 android:hint="@string/info">
@@ -99,6 +103,8 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/adrInput"
+                    android:enabled="false"
+                    android:clickable="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

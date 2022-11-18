@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -29,10 +30,9 @@ import java.util.List;
 
 public class EditMarker extends Activity {
     TextInputEditText innName, innInfo, innAdress;
-    Button delbtn, savebtn;
     ImageButton backbtn;
     Double latitude, longitude;
-    String klikkAdresse, dbLat, dbLong, dbName, dbInfo, dbAddress;
+    String dbName, dbInfo, address;
     int dbId;
 
     @Override
@@ -45,15 +45,12 @@ public class EditMarker extends Activity {
         // Fra klikk
         latitude = hent.getDoubleExtra("latitude", 0);
         longitude = hent.getDoubleExtra("longitude", 0);
-        klikkAdresse = hent.getStringExtra("klikkAdresse");
 
         // Fra info Window
-        dbId = hent.getIntExtra("dbId", 0);
-        dbLat = hent.getStringExtra("dbLat");
-        dbLong = hent.getStringExtra("dbLong");
+        dbId = hent.getIntExtra("dbId", -1);
         dbName = hent.getStringExtra("dbName");
         dbInfo = hent.getStringExtra("dbInfo");
-        dbAddress = hent.getStringExtra("dbAdresse");
+        address = hent.getStringExtra("adresse");
 
         System.out.println(dbId);
 
@@ -62,14 +59,10 @@ public class EditMarker extends Activity {
         innAdress = findViewById(R.id.adrInput);
 
         //fyll inn info i feltene
-        innAdress.setText(klikkAdresse);
-        // denne overkjører den over, lage if setning???
-        innAdress.setText(dbAddress);
+        innAdress.setText(address);
         innName.setText(dbName);
         innInfo.setText(dbInfo);
 
-        savebtn = findViewById(R.id.savebtn);
-        delbtn = findViewById(R.id.delbtn);
         backbtn = findViewById(R.id.backbtn);
 
         backbtn.setOnClickListener(new View.OnClickListener() {
@@ -81,42 +74,49 @@ public class EditMarker extends Activity {
     }
 
     // funskjon som endrer marker
-    public void saveMarker (View v) {
-        getJSON jsonin = new getJSON();
-
+    public void saveMarker(View v) {
         String name = innName.getText().toString();
         String info = innInfo.getText().toString();
-        String adresse = innAdress.getText().toString();
 
-        System.out.println("Severdig het med koordinater " + latitude + " " + longitude + " er laget");
+        if (name.matches("")) {
+            Toast.makeText(this, "Skriv inn navn på severdighet", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        String url = "http://data1500.cs.oslomet.no/~s354592/jsonin.php?Latitude=" + latitude +
-                "&Longitude=" + longitude + "&Name=" + name + "&Info=" + info +
-                "&Adresse=" + adresse;
+        System.out.println("Severdighet med koordinater " + latitude + " " + longitude + " er laget");
 
-        jsonin.execute(url);
+        if (dbId == -1) {
+            // Legg til
+            getJSON jsonin = new getJSON();
+            String newUrl = "http://data1500.cs.oslomet.no/~s354592/jsonin.php?Latitude=" + latitude +
+                    "&Longitude=" + longitude + "&Name=" + name + "&Info=" + info +
+                    "&Adresse=" + address;
 
-        /* Må lage til endring og
-        getJSON jsonendre = new getJSON();
-        task.execute(new
-                String[]{"http://data1500.cs.oslomet.no/~s354592/jsonendre.php"});
-         */
+            jsonin.execute(newUrl);
+        } else {
+            // Endre
+            getJSON jsonendre = new getJSON();
+            String changeUrl = "http://data1500.cs.oslomet.no/~s354592/jsonendre.php?Id="
+                    + dbId + "&Name=" + name + "&Info=" + info;
+
+            jsonendre.execute(changeUrl);
+        }
     }
 
 
     // funksjon som skal slette marker
-    public void deleteMarker (View v) {
+    public void deleteMarker(View v) {
         getJSON jsondelete = new getJSON();
 
         String url = "http://data1500.cs.oslomet.no/~s354592/jsondelete.php?id=" + dbId;
         jsondelete.execute(url);
     }
 
-    private class getJSON extends AsyncTask<String, Void, List<Severdighet>> {
+    private class getJSON extends AsyncTask<String, Void, Boolean> {
         JSONObject jsonObject;
 
         @Override
-        protected List<Severdighet> doInBackground(String... urls) {
+        protected Boolean doInBackground(String... urls) {
             String s = "";
             String output = "";
             System.out.println("Er i doInBackground");
@@ -140,19 +140,23 @@ public class EditMarker extends Activity {
                         output = output + s;
                     }
                     conn.disconnect();
-                    return null;
+                    return true;
                 } catch (Exception e) {
                     e.printStackTrace();
-                    return null;
+                    return false;
                 }
             }
-            return null;
+            return false;
         }
 
         @Override
-        protected void onPostExecute(List<Severdighet> severdigheter) {
+        protected void onPostExecute(Boolean result) {
+            if (!result) {
+                setResult(Activity.RESULT_CANCELED);
+            } else {
+                setResult(Activity.RESULT_OK);
+            }
             finish();
         }
     }
-
 }
