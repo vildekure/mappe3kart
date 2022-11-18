@@ -31,7 +31,9 @@ public class EditMarker extends Activity {
     TextInputEditText innName, innInfo, innAdress;
     Button delbtn, savebtn;
     ImageButton backbtn;
-    String latitude, longitude;
+    Double latitude, longitude;
+    String klikkAdresse, dbLat, dbLong, dbName, dbInfo, dbAddress;
+    int dbId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,18 +41,32 @@ public class EditMarker extends Activity {
         setContentView(R.layout.activity_editmarker);
 
         Intent hent = getIntent();
-        latitude = hent.getStringExtra("latitude");
-        longitude = hent.getStringExtra("longitude");
 
-        /*
-        getJSON jsonendre = new getJSON();
-        task.execute(new
-                String[]{"http://data1500.cs.oslomet.no/~s354592/jsonendre.php"});
-         */
+        // Fra klikk
+        latitude = hent.getDoubleExtra("latitude", 0);
+        longitude = hent.getDoubleExtra("longitude", 0);
+        klikkAdresse = hent.getStringExtra("klikkAdresse");
+
+        // Fra info Window
+        dbId = hent.getIntExtra("dbId", 0);
+        dbLat = hent.getStringExtra("dbLat");
+        dbLong = hent.getStringExtra("dbLong");
+        dbName = hent.getStringExtra("dbName");
+        dbInfo = hent.getStringExtra("dbInfo");
+        dbAddress = hent.getStringExtra("dbAdresse");
+
+        System.out.println(dbId);
 
         innName = findViewById(R.id.nameInput);
         innInfo = findViewById(R.id.infoInput);
         innAdress = findViewById(R.id.adrInput);
+
+        //fyll inn info i feltene
+        innAdress.setText(klikkAdresse);
+        // denne overkjører den over, lage if setning???
+        innAdress.setText(dbAddress);
+        innName.setText(dbName);
+        innInfo.setText(dbInfo);
 
         savebtn = findViewById(R.id.savebtn);
         delbtn = findViewById(R.id.delbtn);
@@ -64,7 +80,7 @@ public class EditMarker extends Activity {
         });
     }
 
-    // funskjon som endrer marker, nå er det kun en tilbake knapp
+    // funskjon som endrer marker
     public void saveMarker (View v) {
         getJSON jsonin = new getJSON();
 
@@ -80,20 +96,21 @@ public class EditMarker extends Activity {
 
         jsonin.execute(url);
 
+        /* Må lage til endring og
+        getJSON jsonendre = new getJSON();
+        task.execute(new
+                String[]{"http://data1500.cs.oslomet.no/~s354592/jsonendre.php"});
+         */
     }
 
 
-    // funksjon som skal slette marker, nå sender den deg kun tilbake
+    // funksjon som skal slette marker
     public void deleteMarker (View v) {
-        /* getJSON jsondelete = new getJSON();
+        getJSON jsondelete = new getJSON();
 
-        // Hvordan få tak i id???
-
-        // String url = "http://data1500.cs.oslomet.no/~s354592/jsondelete.php?id=" + id;
-
-         */
-
-        }
+        String url = "http://data1500.cs.oslomet.no/~s354592/jsondelete.php?id=" + dbId;
+        jsondelete.execute(url);
+    }
 
     private class getJSON extends AsyncTask<String, Void, List<Severdighet>> {
         JSONObject jsonObject;
